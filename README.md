@@ -3,6 +3,9 @@
 
 Production-ready speech emotion inference platform with recorder/upload frontend, secured FastAPI backend, deterministic training pipeline, and model lifecycle controls.
 
+![CI Status](https://github.com/Ramdragneel01/speech-emotion-recognition-ml/actions/workflows/ci.yml/badge.svg)
+![Release Status](https://github.com/Ramdragneel01/speech-emotion-recognition-ml/actions/workflows/release.yml/badge.svg)
+
 LinkedIn mapping: Speech Emotion Recognition Using Machine Learning.
 
 ## Implemented Scope
@@ -51,6 +54,16 @@ npm ci
 npm run dev -- --host 0.0.0.0 --port 4174
 ```
 
+## Visual Evidence
+
+Architecture overview:
+
+![speech-emotion-recognition-ml architecture overview](docs/assets/architecture-overview.svg)
+
+Frontend prediction flow preview:
+
+![speech-emotion-recognition-ml frontend preview](docs/assets/frontend-preview.svg)
+
 ## API Endpoints
 
 1. `GET /health` - readiness and model metadata.
@@ -88,6 +101,32 @@ pytest -q
 cd frontend && npm run build
 ```
 
+## Production Verification
+
+Run before release tag creation:
+
+```bash
+# backend
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python -m compileall -q api src tests
+python -m pip check
+pytest -q --maxfail=1
+pip-audit -r requirements.txt --progress-spinner off
+
+# frontend
+cd frontend
+npm ci
+npm run build
+npm audit --omit=dev --audit-level=high
+```
+
+Expected outcome:
+
+1. Backend compile, dependency consistency, and tests pass.
+2. Frontend production build completes successfully.
+3. No high-severity dependency vulnerabilities remain.
+
 ## Security and Accessibility Highlights
 
 1. Input validation for extension, MIME type, file size, and duration.
@@ -112,4 +151,17 @@ cd frontend && npm run build
 
 1. API: http://127.0.0.1:8001
 2. Frontend: http://127.0.0.1:4174
+
+## Limits and Roadmap
+
+Current limits:
+
+1. Inference path is file-based and does not yet support live streaming sessions.
+2. JSON model artifact format may require optimization for large-scale model families.
+
+Roadmap:
+
+1. Add streaming inference endpoint with bounded session control.
+2. Add model artifact signing and verification before promotion.
+3. Add fairness and drift scorecards into CI release evidence.
 
