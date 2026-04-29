@@ -91,7 +91,7 @@ python -m src.train --output models/latest/model.json --version v0.2.0 --seed 42
 2. Promote by replacing `models/latest/model.json` with a known-good release artifact.
 3. Validate using `GET /health` and one smoke request to `POST /predict`.
 
-## Quality Gates
+## Testing
 
 ```bash
 # backend tests
@@ -152,14 +152,12 @@ Expected outcome:
 1. API: http://127.0.0.1:8001
 2. Frontend: http://127.0.0.1:4174
 
-## Limits and Roadmap
-
-Current limits:
+## Limitations
 
 1. Inference path is file-based and does not yet support live streaming sessions.
 2. JSON model artifact format may require optimization for large-scale model families.
 
-Roadmap:
+## Roadmap
 
 1. Add streaming inference endpoint with bounded session control.
 2. Add model artifact signing and verification before promotion.
